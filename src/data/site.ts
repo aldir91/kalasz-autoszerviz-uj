@@ -44,4 +44,5 @@ export const facts = [
 // TODO: cseréld valódi Google-értékelésekre (név + szöveg). Üres tömb = a szekció csak a gombot mutatja.
 export const reviews: { name: string; text: string }[] = [
   { name: 'F. Eszter', text: 'Nagyon segítőkészek, kedvesek és jó szakemberek. Ha kell, azonnal megoldják a felmerülő problémát.' },
+  { name: 'K. András', text: 'Több autót is szereltettem már velük, ha gyors beavatkozásra van szükség akkor is számíthatok a segítségükre és műszaki vizsgára is tökéletesen felkészítik az autót. A költségekről folyamatosan adnak tájékoztatást és a végén áttekinthető számlát adnak. Csak javasolni tudom mindenkinek.' },
 ];
