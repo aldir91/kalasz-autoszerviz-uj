@@ -43,5 +43,5 @@ export const facts = [
 
 // TODO: cseréld valódi Google-értékelésekre (név + szöveg). Üres tömb = a szekció csak a gombot mutatja.
 export const reviews: { name: string; text: string }[] = [
-  { name: 'Minta Vélemény', text: 'Ide kerül egy valódi ügyfélvélemény a Google-ről. Cseréld le a src/data/site.ts fájlban.' },
+  { name: 'F. Eszter', text: 'Nagyon segítőkészek, kedvesek és jó szakemberek. Ha kell, azonnal megoldják a felmerülő problémát.' },
 ];
