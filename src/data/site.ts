@@ -46,6 +46,5 @@ export const reviews: { name: string; text: string }[] = [
   { name: 'F. Eszter', text: 'Nagyon segítőkészek, kedvesek és jó szakemberek. Ha kell, azonnal megoldják a felmerülő problémát.' },
   { name: 'K. András', text: 'Több autót is szereltettem már velük, ha gyors beavatkozásra van szükség akkor is számíthatok a segítségükre és műszaki vizsgára is tökéletesen felkészítik az autót. A költségekről folyamatosan adnak tájékoztatást és a végén áttekinthető számlát adnak. Csak javasolni tudom mindenkinek.' },
   { name: 'A. Zsolt', text: 'Kiépített szakmai háttér, itt egy helyen mindent javítathatsz, nem kell szerelőtől- szerelőhöz rohangálni. Gyors, pontos ügyintézés, előzetes ár ajánlat egyeztetés, nincs meglepetés, zsákba macska!!! További sok sikert, sok ügyfelet kívánok!' },
-  { name: 'B. László', text: 'Amióta csak tudom hozzájuk hordom az autóimat. Véleményem róluk a szakmájukhoz való mérhetetlen profizmus tudásban, hozzáállásban, barátságos jóhangulatú légkōr. Munkámból kifolyólag sokat vagyok külföldön és bátran állítom, hogy Nyugati szervízek színvonalát képviselik! Mindenkinek csak ajánlani tudom őket!!!' },
   { name: 'M. Gábor', text: 'Megbízható, precíz munka, folyamatos kommunikáció és dokumentálás mellett! Nagyon ajánlom!' },
 ];
