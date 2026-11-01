@@ -1,0 +1,22 @@
+---
+import { site, reviews } from '../data/site';
+---
+<section class="section section--alt" id="velemenyek">
+  <div class="wrap">
+    <div class="section__head"><h2>Ügyfeleink véleménye</h2></div>
+    {site.rating && (
+      <div class="rating">
+        <strong>{site.rating.value}</strong>
+        <span>Google értékelés · {site.rating.count} vélemény alapján</span>
+      </div>
+    )}
+    {reviews.length > 0 && (
+      <div class="reviews">
+        {reviews.map((r) => (
+          <figure class="review" style="margin:0"><blockquote style="margin:0"><p>{r.text}</p></blockquote><cite>{r.name}</cite></figure>
+        ))}
+      </div>
+    )}
+    <a class="btn btn--outline" href={site.googleReviewsUrl} target="_blank" rel="noopener">Összes vélemény a Google-on</a>
+  </div>
+</section>

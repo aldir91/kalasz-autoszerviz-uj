@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+const { legal } = site;
+---
+<Layout title={`Adatkezelési tájékoztató | ${site.name}`} description="A Kalász Autószerviz weboldalának adatkezelési tájékoztatója." noindex>
+  <div class="wrap prose">
+    <p class="note">Sablon: élesítés előtt töltsd ki a [szögletes zárójeles] részeket az ügyfél adataival, és érdemes jogásszal / adatvédelmi szakemberrel átnézetni.</p>
+    <h1>Adatkezelési tájékoztató</h1>
+
+    <h2>1. Az adatkezelő</h2>
+    <p>{legal.company}<br />Székhely: {site.address.zip} {site.address.city}, {site.address.street}<br />Adószám: {legal.taxId} · Nyilvántartási szám: {legal.regId}<br />E-mail: {site.email} · Telefon: {site.phone}</p>
+
+    <h2>2. Milyen adatokat kezelünk és miért?</h2>
+    <p>Az időpontkérő űrlapon megadott adatokat: név, telefonszám, e-mail cím (ha megadja), autó típusa, rendszám, kért szolgáltatás, kívánt időpont és a megjegyzés. Célja: az Ön megkeresésének fogadása, visszahívás és az időpont egyeztetése.</p>
+    <p>Jogalap: az Ön hozzájárulása (GDPR 6. cikk (1) a) pont), illetve a szerződéskötést megelőző lépések (6. cikk (1) b) pont). A hozzájárulást az űrlap bejelölésével adja meg, és bármikor visszavonhatja.</p>
+
+    <h2>3. Meddig őrizzük az adatokat?</h2>
+    <p>Az időpontkérés adatait az ügyintézés lezárásáig, de legfeljebb [pl. 12] hónapig őrizzük. Ha a javítás megtörténik, a számviteli és garanciális szabályok szerinti megőrzési idők külön érvényesek.</p>
+
+    <h2>4. Kik kapják meg az adatokat?</h2>
+    <p>Az űrlap adatait a Web3Forms szolgáltatás (adatfeldolgozó) továbbítja az adatkezelő e-mail fiókjába. Az e-mail szolgáltató ([pl. Google Gmail]) szintén adatfeldolgozó. Ezek a szolgáltatók az EGT-n kívül is kezelhetnek adatot, megfelelő garanciák mellett. Az adatokat egyéb célra nem adjuk át.</p>
+
+    <h2>5. Sütik és külső tartalmak</h2>
+    <p>Az oldal nem használ követő- vagy marketingsüti. A világos/sötét mód beállítását az Ön böngészője helyben tárolja (localStorage), ez nem kerül hozzánk. A Google térkép csak a „Térkép betöltése” gomb megnyomása után töltődik be; ekkor a Google saját adatkezelése is érvényes ({`https://policies.google.com/privacy`}).</p>
+
+    <h2>6. Az Ön jogai</h2>
+    <p>Kérhet tájékoztatást, helyesbítést, törlést, az adatkezelés korlátozását, élhet az adathordozhatósághoz való joggal, és tiltakozhat az adatkezelés ellen. Kérelmét a fenti elérhetőségeken küldheti el, 30 napon belül válaszolunk.</p>
+
+    <h2>7. Jogorvoslat</h2>
+    <p>Panasszal a Nemzeti Adatvédelmi és Információszabadság Hatósághoz fordulhat (1055 Budapest, Falk Miksa utca 9–11., <a href="https://naih.hu" rel="noopener">naih.hu</a>), vagy bírósághoz fordulhat.</p>
+    <p><a href="/">← Vissza a főoldalra</a></p>
+  </div>
+</Layout>

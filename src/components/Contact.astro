@@ -1,0 +1,44 @@
+---
+import { site } from '../data/site';
+const q = encodeURIComponent(`${site.address.street} ${site.address.zip} ${site.address.city}`);
+const embed = `https://www.google.com/maps?q=${q}&output=embed`;
+const route = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+---
+<section class="section section--alt" id="kapcsolat">
+  <div class="wrap">
+    <div class="section__head"><h2>Kapcsolat</h2></div>
+    <div class="contact">
+      <div>
+        <dl>
+          <div><dt>Telefon</dt><dd><a href={site.phoneHref}>{site.phone}</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+          <div><dt>Cím</dt><dd>{site.address.zip} {site.address.city}, {site.address.street}</dd></div>
+          <div><dt>Facebook</dt><dd><a href={site.facebook} target="_blank" rel="noopener">Kalász Autószerviz</a></dd></div>
+          <div>
+            <dt>Nyitvatartás</dt>
+            <dd><table class="hours"><tbody>{site.hours.map((h) => <tr><td>{h.days}</td><td>{h.time}</td></tr>)}</tbody></table></dd>
+          </div>
+        </dl>
+        <a class="btn btn--red" style="margin-top:1.6rem" href={route} target="_blank" rel="noopener">Útvonaltervezés</a>
+      </div>
+      <div class="map" id="map" data-src={embed}>
+        <div>
+          <p>A térkép betöltésekor adatok kerülnek a Google-hoz. Csak akkor töltjük be, ha Ön kéri.</p>
+          <button class="btn btn--outline" type="button" id="map-load">Térkép betöltése</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const box = document.getElementById('map');
+  document.getElementById('map-load')?.addEventListener('click', () => {
+    if (!box) return;
+    const f = document.createElement('iframe');
+    f.src = box.dataset.src || '';
+    f.title = 'Kalász Autószerviz térképen';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    box.replaceChildren(f);
+  });
+</script>

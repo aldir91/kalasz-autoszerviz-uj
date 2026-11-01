@@ -1,0 +1,70 @@
+---
+import { Image, getImage } from 'astro:assets';
+
+// Tedd a képeket a src/assets/gallery/ mappába (jpg, png, webp) – automatikusan megjelennek.
+const modules = import.meta.glob<{ default: ImageMetadata }>('/src/assets/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}', { eager: true });
+const sources = Object.entries(modules).sort(([a], [b]) => a.localeCompare(b)).map(([, m]) => m.default);
+const items = await Promise.all(
+  sources.map(async (src) => ({ src, full: (await getImage({ src, width: 1800, format: 'webp' })).src })),
+);
+const VISIBLE = 9;
+---
+<section class="section" id="referenciak">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Pár kép szervizünkből</h2>
+      <p>Így dolgozunk: valódi munkák a békési műhelyből.</p>
+    </div>
+    {items.length === 0 ? (
+      <p class="gallery-empty">Még nincs kép. Másold a fotókat a <code>src/assets/gallery/</code> mappába.</p>
+    ) : (
+      <div class="gallery">
+        {items.map((it, i) => (
+          <button class="gallery__item" type="button" data-full={it.full} hidden={i >= VISIBLE} aria-label="Kép megnyitása nagyban">
+            <Image src={it.src} width={640} alt="Munka a Kalász Autószerviz műhelyében" loading="lazy" format="webp" />
+          </button>
+        ))}
+      </div>
+    )}
+    {items.length > VISIBLE && (
+      <div class="gallery__more"><button class="btn btn--outline" type="button" id="gallery-more">Összes kép ({items.length})</button></div>
+    )}
+  </div>
+</section>
+<dialog class="lightbox" id="lightbox" aria-label="Képnézegető">
+  <div class="lightbox__in"><img alt="" id="lb-img" /></div>
+  <button class="lb-close" type="button" aria-label="Bezárás">×</button>
+  <button class="lb-prev" type="button" aria-label="Előző kép">‹</button>
+  <button class="lb-next" type="button" aria-label="Következő kép">›</button>
+</dialog>
+<script>
+  const dlg = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = document.getElementById('lb-img') as HTMLImageElement | null;
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.gallery__item'));
+  let idx = 0;
+  const show = (i: number) => {
+    if (!img || !buttons.length) return;
+    idx = (i + buttons.length) % buttons.length;
+    img.src = buttons[idx].dataset.full || '';
+  };
+  buttons.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg?.showModal(); }));
+  dlg?.querySelector('.lb-close')?.addEventListener('click', () => dlg.close());
+  dlg?.querySelector('.lb-prev')?.addEventListener('click', () => show(idx - 1));
+  dlg?.querySelector('.lb-next')?.addEventListener('click', () => show(idx + 1));
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg || (e.target as HTMLElement).classList.contains('lightbox__in')) dlg.close(); });
+  dlg?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+  document.getElementById('gallery-more')?.addEventListener('click', (e) => {
+    buttons.forEach((b) => (b.hidden = false));
+    (e.currentTarget as HTMLElement).parentElement?.remove();
+  });
+  // érintőképernyős lapozás
+  let x0 = 0;
+  dlg?.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  dlg?.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(dx > 0 ? idx - 1 : idx + 1);
+  });
+</script>

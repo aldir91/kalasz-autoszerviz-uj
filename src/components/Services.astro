@@ -1,0 +1,16 @@
+---
+import { services } from '../data/site';
+---
+<section class="section" id="szolgaltatasok">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Szolgáltatások</h2>
+      <p>Márkafüggetlen autószerelés Békésen és környékén, személyautókra és kis teherautókra.</p>
+    </div>
+    <ul class="services">
+      {services.map((s) => (
+        <li><h3>{s.title}</h3><p>{s.text}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>

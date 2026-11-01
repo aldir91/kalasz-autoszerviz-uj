@@ -1,0 +1,230 @@
+/* ---------- Tokenek ---------- */
+:root {
+  --red: #dc2626;
+  --red-dark: #b91c1c;
+  --display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  --body: 'Barlow', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --wrap: 1120px;
+  --header-h: 72px;
+  color-scheme: light;
+}
+:root, :root[data-theme='light'] {
+  --bg: #ffffff;
+  --surface: #f4f4f5;
+  --text: #121212;
+  --muted: #55555c;
+  --line: #e2e2e5;
+}
+:root[data-theme='dark'] {
+  --bg: #0d0d0d;
+  --surface: #171717;
+  --text: #f4f4f4;
+  --muted: #a3a3a3;
+  --line: #2a2a2a;
+  color-scheme: dark;
+}
+
+/* ---------- Alapok ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); line-height: 1; margin: 0; letter-spacing: 0.005em; }
+h2 { font-size: clamp(2.4rem, 5vw, 3.4rem); font-weight: 800; }
+h3 { font-size: 1.5rem; font-weight: 700; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.wrap { width: min(var(--wrap), 100% - 2.5rem); margin-inline: auto; }
+.section { padding-block: clamp(4rem, 9vw, 7rem); }
+.section--alt { background: var(--surface); }
+.section__head { margin-bottom: 2.75rem; max-width: 40rem; }
+.section__head p { color: var(--muted); margin-top: 0.9rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Gombok ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  min-height: 3.25rem; padding: 0.7rem 1.6rem;
+  font: 700 1.1rem/1 var(--display); letter-spacing: 0.03em;
+  border-radius: 6px; border: 2px solid transparent; cursor: pointer;
+  text-decoration: none; transition: background-color .15s, border-color .15s, color .15s;
+}
+.btn--red { background: var(--red); color: #fff; }
+.btn--red:hover { background: var(--red-dark); }
+.btn--ghost { border-color: rgba(255,255,255,.7); color: #fff; }
+.btn--ghost:hover { background: #fff; color: #111; }
+.btn--white { background: #fff; color: var(--red-dark); }
+.btn--white:hover { background: #f3f3f3; }
+.btn--outline { border-color: var(--line); color: var(--text); }
+.btn--outline:hover { border-color: var(--red); color: var(--red); }
+.btn svg { width: 1.2em; height: 1.2em; flex: none; }
+.btn[disabled] { opacity: .6; cursor: progress; }
+
+/* ---------- Fejléc ---------- */
+.header { position: sticky; top: 0; z-index: 50; background: var(--red); color: #fff; height: var(--header-h); }
+.header__in { display: flex; align-items: center; gap: 1.5rem; height: 100%; }
+.brand { display: flex; align-items: center; gap: .8rem; text-decoration: none; margin-right: auto; }
+.brand img { width: 46px; height: 46px; border-radius: 4px; }
+.brand span { font: 800 1.9rem/1 var(--display); letter-spacing: .005em; }
+.nav { display: flex; align-items: center; gap: 1.6rem; }
+.nav a:not(.btn) { text-decoration: none; font-weight: 600; font-size: .98rem; padding-block: .4rem; border-bottom: 2px solid transparent; }
+.nav a:not(.btn):hover { border-bottom-color: #fff; }
+.icon-btn {
+  width: 42px; height: 42px; display: grid; place-items: center; flex: none;
+  border: 1.5px solid rgba(255,255,255,.55); border-radius: 6px; background: transparent; color: #fff; cursor: pointer;
+}
+.icon-btn:hover { background: rgba(255,255,255,.15); }
+.icon-btn svg { width: 20px; height: 20px; }
+.theme-toggle .i-sun { display: none; }
+:root[data-theme='dark'] .theme-toggle .i-sun { display: block; }
+:root[data-theme='dark'] .theme-toggle .i-moon { display: none; }
+.header .btn { min-height: 42px; padding: .4rem 1.1rem; font-size: 1rem; }
+.menu-btn { display: none; }
+
+@media (max-width: 960px) {
+  .menu-btn { display: grid; }
+  .nav {
+    position: absolute; inset: var(--header-h) 0 auto 0; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--red-dark); padding: .5rem 1.25rem 1.25rem; display: none;
+  }
+  .nav.is-open { display: flex; }
+  .nav a:not(.btn) { padding: .9rem 0; border-bottom: 1px solid rgba(255,255,255,.2); font-size: 1.1rem; }
+  .nav .btn, .nav .icon-btn { display: none; }
+  .header__call { display: inline-flex; }
+}
+@media (min-width: 961px) { .header__call { display: none; } }
+@media (max-width: 420px) { .brand span { font-size: 1.5rem; } .header__call { padding-inline: .8rem; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; isolation: isolate; color: #fff; overflow: hidden;
+  min-height: min(86svh, 780px); display: flex; flex-direction: column; justify-content: flex-end;
+  background: #0d0d0d url('/video/poster.jpg') center / cover no-repeat;
+}
+.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); z-index: -2; }
+.hero::before { /* sötétítés + pirosas árnyalat */
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(10,10,10,.88) 0%, rgba(10,10,10,.55) 55%, rgba(10,10,10,.3) 100%),
+    linear-gradient(0deg, rgba(10,10,10,.85) 0%, transparent 45%);
+}
+.hero__body { padding-block: 6rem 3.5rem; }
+.hero h1 { font-size: clamp(3.6rem, 12.5vw, 9rem); font-weight: 800; line-height: .86; letter-spacing: -.005em; max-width: 9ch; }
+.hero__lead { font-size: clamp(1.15rem, 2.4vw, 1.5rem); margin-top: 1.6rem; max-width: 34rem; color: #e8e8e8; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+.hero__facts { border-top: 4px solid var(--red); background: rgba(10,10,10,.75); backdrop-filter: blur(4px); }
+.hero__facts ul { list-style: none; margin: 0; padding: 1rem 0; display: flex; flex-wrap: wrap; gap: .4rem 2.2rem; font-weight: 600; font-size: .98rem; }
+.hero__facts li::before { content: ''; display: inline-block; width: .55rem; height: .55rem; background: var(--red); margin-right: .6rem; }
+@media (prefers-reduced-motion: reduce) { .hero__video { display: none; } }
+
+/* ---------- Szolgáltatások ---------- */
+.services { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 4rem; }
+.services li { padding: 1.5rem 0 1.5rem 1.25rem; border-top: 1px solid var(--line); position: relative; }
+.services li::before { content: ''; position: absolute; left: 0; top: 1.5rem; bottom: 1.5rem; width: 4px; background: var(--red); transform: scaleY(.35); transform-origin: top; transition: transform .2s; }
+.services li:hover::before { transform: scaleY(1); }
+.services p { color: var(--muted); margin-top: .45rem; }
+@media (max-width: 760px) { .services { grid-template-columns: 1fr; } }
+
+/* ---------- Rólunk ---------- */
+.about { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.about__text p { color: var(--muted); max-width: 34rem; }
+.about__text p + p { margin-top: 1rem; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
+.checks li { display: flex; align-items: center; gap: .9rem; font: 700 1.5rem/1.1 var(--display); padding-bottom: .9rem; border-bottom: 1px solid var(--line); }
+.checks li::before { content: ''; flex: none; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 70% no-repeat; }
+@media (max-width: 800px) { .about { grid-template-columns: 1fr; } }
+
+/* ---------- Galéria ---------- */
+.gallery { columns: 3 280px; column-gap: .9rem; }
+.gallery__item { display: block; width: 100%; margin: 0 0 .9rem; padding: 0; border: 0; background: var(--surface); cursor: zoom-in; break-inside: avoid; overflow: hidden; border-radius: 4px; }
+.gallery__item[hidden] { display: none; }
+.gallery__item img { width: 100%; height: auto; transition: transform .35s, filter .35s; filter: grayscale(.35); }
+.gallery__item:hover img { transform: scale(1.04); filter: none; }
+.gallery__more { margin-top: 1.5rem; text-align: center; }
+.gallery-empty { color: var(--muted); border: 2px dashed var(--line); padding: 2rem; border-radius: 6px; }
+.lightbox { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100%; height: 100%; }
+.lightbox::backdrop { background: rgba(0,0,0,.92); }
+.lightbox__in { height: 100%; display: grid; place-items: center; padding: 3.5rem 4.5rem; }
+.lightbox img { max-height: 100%; max-width: 100%; object-fit: contain; }
+.lightbox button { position: absolute; width: 48px; height: 48px; border: 0; border-radius: 50%; background: rgba(255,255,255,.14); color: #fff; font-size: 1.6rem; cursor: pointer; }
+.lightbox button:hover { background: var(--red); }
+.lightbox .lb-close { top: 1rem; right: 1rem; }
+.lightbox .lb-prev { left: 1rem; top: 50%; translate: 0 -50%; }
+.lightbox .lb-next { right: 1rem; top: 50%; translate: 0 -50%; }
+@media (max-width: 600px) { .lightbox__in { padding: 4rem .5rem; } .lightbox .lb-prev, .lightbox .lb-next { top: auto; bottom: 1rem; translate: none; } }
+
+/* ---------- Vélemények ---------- */
+.rating { display: flex; align-items: baseline; gap: .8rem; margin-bottom: 2rem; }
+.rating strong { font: 800 4rem/1 var(--display); color: var(--red); }
+.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.review { border-left: 4px solid var(--red); padding: .2rem 0 .2rem 1.2rem; }
+.review p { font-size: 1.1rem; }
+.review cite { display: block; margin-top: .8rem; font-style: normal; font-weight: 600; color: var(--muted); }
+
+/* ---------- Időpontkérés ---------- */
+.booking { display: grid; grid-template-columns: 1fr 1.5fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.booking__aside p { color: var(--muted); margin-top: 1rem; }
+.booking__aside .btn { margin-top: 1.5rem; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+.field { display: flex; flex-direction: column; gap: .4rem; }
+.field--full { grid-column: 1 / -1; }
+.field label { font-weight: 600; font-size: .95rem; }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 3rem; padding: .7rem .9rem; font: inherit; color: var(--text);
+  background: var(--bg); border: 1.5px solid var(--line); border-radius: 6px;
+}
+.section--alt .field input, .section--alt .field select, .section--alt .field textarea { background: var(--bg); }
+.field textarea { min-height: 6.5rem; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.25); }
+.consent { display: flex; gap: .75rem; align-items: flex-start; font-size: .95rem; color: var(--muted); }
+.consent input { width: 1.2rem; height: 1.2rem; margin-top: .2rem; accent-color: var(--red); flex: none; }
+.consent a { color: var(--text); }
+.hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+.form__status { grid-column: 1 / -1; min-height: 1.5rem; font-weight: 600; }
+.form__status.ok { color: #16a34a; }
+.form__status.err { color: var(--red); }
+@media (max-width: 860px) { .booking { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .form { grid-template-columns: 1fr; } }
+
+/* ---------- Kapcsolat ---------- */
+.contact { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(2rem, 6vw, 4rem); }
+.contact dl { margin: 0; display: grid; gap: 1.3rem; }
+.contact dt { font-weight: 700; color: var(--muted); font-size: .95rem; }
+.contact dd { margin: .15rem 0 0; font: 700 1.5rem/1.2 var(--display); }
+.contact dd a { text-decoration: none; }
+.contact dd a:hover { color: var(--red); }
+.hours { width: 100%; border-collapse: collapse; font-family: var(--body); font-size: 1.05rem; font-weight: 500; }
+.hours td { padding: .35rem 0; }
+.hours td:last-child { text-align: right; }
+.map { position: relative; min-height: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: grid; place-items: center; text-align: center; padding: 1.5rem; }
+.map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.map p { color: var(--muted); font-size: .92rem; max-width: 24rem; margin: 0 auto 1.1rem; }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
+
+/* ---------- Lábléc, mobil hívósáv ---------- */
+.footer { border-top: 4px solid var(--red); padding-block: 2rem 5.5rem; color: var(--muted); font-size: .95rem; }
+.footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; }
+.footer a:hover { color: var(--red); }
+.callbar { display: none; }
+@media (max-width: 760px) {
+  .callbar { display: flex; position: fixed; inset: auto 0 0 0; z-index: 40; padding: .6rem .9rem calc(.6rem + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
+  .callbar .btn { width: 100%; }
+}
+
+/* ---------- Jogi oldal ---------- */
+.prose { max-width: 46rem; padding-block: 4rem 6rem; }
+.prose h1 { font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; }
+.prose h2 { font-size: 1.9rem; margin: 2.4rem 0 .8rem; }
+.prose p, .prose li { color: var(--muted); }
+.prose p + p, .prose ul { margin-top: .8rem; }
+.prose a { color: var(--red); }
+.note { border-left: 4px solid var(--red); background: var(--surface); padding: 1rem 1.2rem; margin-bottom: 2rem; color: var(--text); }

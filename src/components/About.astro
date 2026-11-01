@@ -1,0 +1,13 @@
+---
+import { facts } from '../data/site';
+---
+<section class="section section--alt" id="rolunk">
+  <div class="wrap about">
+    <div class="about__text">
+      <h2>Rólunk</h2>
+      <p style="margin-top:1.4rem">Q-Service hálózat tagja vagyunk, több mint 15 év tapasztalattal. Márkafüggetlen autószerviz személyautók és kis teherautók javítására.</p>
+      <p>Modern diagnosztikával gyorsan megtaláljuk a hibát, és minden elvégzett munkára garanciát vállalunk.</p>
+    </div>
+    <ul class="checks">{facts.map((f) => <li>{f}</li>)}</ul>
+  </div>
+</section>

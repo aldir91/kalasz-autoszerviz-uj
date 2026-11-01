@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kalaszauto.hu/sitemap-index.xml
