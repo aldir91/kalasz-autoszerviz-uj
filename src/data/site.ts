@@ -1,7 +1,7 @@
 // Minden üzleti adat egy helyen: itt szerkeszthető.
 export const site = {
   name: 'Kalász Autószerviz',
-  defaultTitle: 'Kalász Autószerviz | Autószerviz Békésen – Fék, Futómű, Diagnosztika',
+  defaultTitle: 'Kalász Autószerviz',
   description:
     'Autószerviz Békésen és környékén. Fék, futómű, diagnosztika, olajcsere, műszaki felkészítés. Q-Service hálózat tagja, 15+ év tapasztalat.',
   phone: '+36 70 368 3302',
