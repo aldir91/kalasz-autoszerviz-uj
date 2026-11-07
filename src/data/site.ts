@@ -22,8 +22,8 @@ export const site = {
 };
 
 export const services = [
-  { title: 'Fék javítás', text: 'Féktárcsa, fékbetét, fékfolyadék csere – gyorsan és garanciával.' },
-  { title: 'Futómű javítás', text: 'Lengéscsillapító, stabilizátor, futómű geometria beállítás.' },
+  { title: 'Fékjavítás', text: 'Féktárcsa, fékbetét, fékfolyadék csere – gyorsan és garanciával.' },
+  { title: 'Futómű-javítás', text: 'Lengéscsillapító, stabilizátor, futómű geometria beállítás.' },
   { title: 'Motor diagnosztika', text: 'Bosch diagnosztika, hibakód olvasás, pontos hibafeltárás.' },
   { title: 'Olajcsere', text: 'Motorolaj és szűrők cseréje márkafüggetlenül, minőségi alapanyagokkal.' },
   { title: 'Vezérlés és kuplung csere', text: 'Vezérműszíj, vezérműlánc, kuplung szett csere szakszerűen.' },
