@@ -28,7 +28,7 @@ export const services = [
   { title: 'Olajcsere', text: 'Motorolaj és szűrők cseréje márkafüggetlenül, minőségi alapanyagokkal.' },
   { title: 'Vezérlés és kuplung csere', text: 'Vezérműszíj, vezérműlánc, kuplung szett csere szakszerűen.' },
   { title: 'Elektromos hibák javítása', text: 'Elektromos rendszer diagnosztika és javítás minden márkára.' },
-  { title: 'Műszakira felkészítés', text: 'Teljes körű átvizsgálás és felkészítés a műszaki vizsgára.' },
+  { title: 'Műszaki vizsgára való felkészítés', text: 'Teljes körű átvizsgálás és felkészítés a műszaki vizsgára.' },
   { title: 'Általános karbantartás', text: 'Időszakos szervizelés, ellenőrzés, megelőző karbantartás.' },
 ];
 
