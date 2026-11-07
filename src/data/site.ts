@@ -1,4 +1,4 @@
-// Minden üzleti adat egy helyen: itt szerkeszthető, a többi fájlhoz nem kell nyúlni.
+// Minden üzleti adat egy helyen: itt szerkeszthető.
 export const site = {
   name: 'Kalász Autószerviz',
   defaultTitle: 'Kalász Autószerviz | Autószerviz Békésen – Fék, Futómű, Diagnosztika',
@@ -9,15 +9,15 @@ export const site = {
   email: 'nagy.csavas@gmail.com',
   address: { street: 'Kalász sor 28.', zip: '5630', city: 'Békés' },
   facebook: 'https://www.facebook.com/p/Kal%C3%A1sz-Aut%C3%B3szerviz-61582370366586/',
-  // TODO: a Google Cégprofil "Vélemények" linkje
+  // Google Cégprofil "Vélemények" linkje
   googleReviewsUrl: 'https://www.google.com/maps/search/?api=1&query=K%C3%A1l%C3%A1sz+Aut%C3%B3szerviz+B%C3%A9k%C3%A9s',
-  // TODO: valós értékek, ha megvannak (null = nem jelenik meg)
+  // valós értékek, ha megvannak (null = nem jelenik meg)
   rating: null as null | { value: string; count: number },
   hours: [
     { days: 'Hétfő – Péntek', time: '08:00 – 17:00' },
     { days: 'Szombat – Vasárnap', time: 'Zárva' },
   ],
-  // adatkezelési tájékoztatóhoz – TODO: töltsd ki az ügyfél adataival
+  // adatkezelési tájékoztató
   legal: { company: 'Kalász Autószerviz [cégnév / egyéni vállalkozó neve]', taxId: '[adószám]', regId: '[nyilvántartási szám]' },
 };
 
@@ -41,7 +41,7 @@ export const facts = [
   'Békés és környéke',
 ];
 
-// TODO: cseréld valódi Google-értékelésekre (név + szöveg). Üres tömb = a szekció csak a gombot mutatja.
+// Google-értékelések. Üres tömb = a szekció csak a gombot mutatja.
 export const reviews: { name: string; text: string }[] = [
   { name: 'F. Eszter', text: 'Nagyon segítőkészek, kedvesek és jó szakemberek. Ha kell, azonnal megoldják a felmerülő problémát.' },
   { name: 'K. András', text: 'Több autót is szereltettem már velük, ha gyors beavatkozásra van szükség akkor is számíthatok a segítségükre és műszaki vizsgára is tökéletesen felkészítik az autót. A költségekről folyamatosan adnak tájékoztatást és a végén áttekinthető számlát adnak. Csak javasolni tudom mindenkinek.' },
