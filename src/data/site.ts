@@ -13,6 +13,7 @@ export const site = {
   googleReviewsUrl: 'https://www.google.com/maps/search/?api=1&query=K%C3%A1l%C3%A1sz+Aut%C3%B3szerviz+B%C3%A9k%C3%A9s',
   // valós értékek, ha megvannak (null = nem jelenik meg)
   rating: null as null | { value: string; count: number },
+  googleRating: { value: '5,0', label: 'közel 80 vélemény' },
   hours: [
     { days: 'Hétfő – Péntek', time: '08:00 – 17:00' },
     { days: 'Szombat – Vasárnap', time: 'Zárva' },
