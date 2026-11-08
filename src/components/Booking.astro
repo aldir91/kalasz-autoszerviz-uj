@@ -12,25 +12,25 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
       <a class="btn btn--outline" href={site.phoneHref}>{site.phone}</a>
     </div>
     <form class="form" id="booking-form" data-key={import.meta.env.PUBLIC_WEB3FORMS_KEY} novalidate>
-      <div class="field"><label for="f-name">Név *</label><input id="f-name" name="Név" required autocomplete="name" /></div>
-      <div class="field"><label for="f-phone">Telefonszám *</label><input id="f-phone" name="Telefonszám" type="tel" required autocomplete="tel" /></div>
+      <div class="field"><label for="f-name">Név *</label><input id="f-name" name="Nev" required autocomplete="name" /></div>
+      <div class="field"><label for="f-phone">Telefonszám *</label><input id="f-phone" name="Telefonszam" type="tel" required autocomplete="tel" /></div>
       <div class="field field--full"><label for="f-email">E-mail</label><input id="f-email" name="E-mail" type="email" autocomplete="email" /></div>
       <div class="field field--full">
         <label for="f-service">Szolgáltatás *</label>
-        <select id="f-service" name="Szolgáltatás" required>
+        <select id="f-service" name="Szolgaltatas" required>
           <option value="">Válasszon…</option>
           {services.map((s) => <option>{s.title}</option>)}
           <option>Egyéb</option>
         </select>
       </div>
-      <div class="field"><label for="f-car">Autó típusa</label><input id="f-car" name="Autó típusa" placeholder="pl. Audi A4 2.0 TDI" /></div>
-      <div class="field"><label for="f-plate">Rendszám</label><input id="f-plate" name="Rendszám" autocapitalize="characters" /></div>
-      <div class="field"><label for="f-date">Kívánt dátum *</label><input id="f-date" name="Kívánt dátum" type="date" required /></div>
+      <div class="field"><label for="f-car">Autó típusa</label><input id="f-car" name="Auto tipusa" placeholder="pl. Audi A4 2.0 TDI" /></div>
+      <div class="field"><label for="f-plate">Rendszám</label><input id="f-plate" name="Rendszam" autocapitalize="characters" /></div>
+      <div class="field"><label for="f-date">Kívánt dátum *</label><input id="f-date" name="Kivant dátum" type="date" required /></div>
       <div class="field">
         <label for="f-time">Kívánt időpont *</label>
         <select id="f-time" name="Kívánt időpont" required><option value="">Válasszon…</option>{times.map((t) => <option>{t}</option>)}</select>
       </div>
-      <div class="field field--full"><label for="f-note">Megjegyzés</label><textarea id="f-note" name="Megjegyzés" placeholder="Írja le röviden a hibát vagy a kérést"></textarea></div>
+      <div class="field field--full"><label for="f-note">Megjegyzés</label><textarea id="f-note" name="Megjegyzes" placeholder="Írja le röviden a hibát vagy a kérést"></textarea></div>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <label class="consent field--full">
         <input type="checkbox" id="f-consent" required />
