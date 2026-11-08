@@ -1,1 +1,22 @@
-
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Az oldal nem található | Kalász Autószerviz" noindex>
+  <section class="section nf">
+    <div class="wrap">
+      <p class="nf__code" aria-hidden="true">404</p>
+      <h1>Ez az oldal nem található</h1>
+      <p class="nf__txt">Lehet, hogy a cím elírásra került vagy az oldal időközben megszűnt. A főoldalról minden elérhető.</p>
+      <a class="btn btn--red" href="/">Vissza a főoldalra</a>
+    </div>
+  </section>
+</Layout>
+<style>
+  .nf { min-height: 60vh; display: grid; align-items: center; }
+  .nf__code {
+    font: 800 clamp(7rem, 24vw, 15rem) / 0.8 var(--display);
+    color: var(--red);
+  }
+  .nf h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-top: 1rem; }
+  .nf__txt { color: var(--muted); margin: 1rem 0 2rem; max-width: 32rem; }
+</style>
