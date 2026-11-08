@@ -31,11 +31,12 @@ const VISIBLE = 6;
     )}
   </div>
 </section>
-<dialog class="lightbox" id="lightbox" aria-label="Képnézegető">
-  <div class="lightbox__in"><img alt="" id="lb-img" /></div>
-  <button class="lb-close" type="button" aria-label="Bezárás">×</button>
-  <button class="lb-prev" type="button" aria-label="Előző kép">‹</button>
-  <button class="lb-next" type="button" aria-label="Következő kép">›</button>
+<dialog class="viewer" id="viewer" aria-label="Képnézegető">
+  <img class="viewer__img" id="viewer-img" alt="" />
+  <p class="viewer__count" id="viewer-count" aria-live="polite"></p>
+  <button class="viewer__btn viewer__close" type="button" aria-label="Bezárás">×</button>
+  <button class="viewer__btn viewer__prev" type="button" aria-label="Előző kép">‹</button>
+  <button class="viewer__btn viewer__next" type="button" aria-label="Következő kép">›</button>
 </dialog>
 <style>
   .grid {
@@ -86,22 +87,104 @@ const VISIBLE = 6;
   @media (max-width: 860px) {
     .grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   }
+
+  /* ---------- Nagyító ablak ---------- */
+  .viewer {
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+    max-width: none;
+    max-height: none;
+    width: fit-content;
+    color: #fff;
+  }
+  .viewer::backdrop {
+    background: rgba(8, 8, 8, 0.6);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+  .viewer__img {
+    display: block;
+    max-width: min(92vw, 1500px);
+    max-height: 80vh;
+    max-height: 80dvh;
+    width: auto;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  }
+  .viewer[open] .viewer__img { animation: viewer-in 0.22s ease-out; }
+  @keyframes viewer-in {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  .viewer__count {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 1.1rem;
+    text-align: center;
+    font: 600 1rem/1 var(--body);
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    pointer-events: none;
+  }
+  .viewer__btn {
+    position: fixed;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font: 400 2rem/1 var(--body);
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  .viewer__btn:hover { background: var(--red); }
+  .viewer__close { top: 1rem; right: 1rem; }
+  .viewer__prev { left: 1rem; top: 50%; translate: 0 -50%; }
+  .viewer__next { right: 1rem; top: 50%; translate: 0 -50%; }
+  @media (max-width: 700px) {
+    .viewer__img { max-width: 96vw; max-height: 72vh; max-height: 72dvh; }
+    .viewer__prev, .viewer__next { top: auto; bottom: 0.8rem; translate: none; }
+    .viewer__prev { left: 1rem; }
+    .viewer__next { right: 1rem; }
+  }
+  :global(body:has(dialog[open])) { overflow: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    .viewer[open] .viewer__img { animation: none; }
+  }
 </style>
 <script>
-  const dlg = document.getElementById('lightbox') as HTMLDialogElement | null;
-  const img = document.getElementById('lb-img') as HTMLImageElement | null;
+  const dlg = document.getElementById('viewer') as HTMLDialogElement | null;
+  const img = document.getElementById('viewer-img') as HTMLImageElement | null;
+  const count = document.getElementById('viewer-count');
   const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tile'));
   let idx = 0;
+
+  const preload = (i: number) => {
+    const n = (i + buttons.length) % buttons.length;
+    const p = new Image();
+    p.src = buttons[n].dataset.full || '';
+  };
   const show = (i: number) => {
     if (!img || !buttons.length) return;
     idx = (i + buttons.length) % buttons.length;
     img.src = buttons[idx].dataset.full || '';
+    if (count) count.textContent = `${idx + 1} / ${buttons.length}`;
+    preload(idx + 1);
+    preload(idx - 1);
   };
+
   buttons.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg?.showModal(); }));
-  dlg?.querySelector('.lb-close')?.addEventListener('click', () => dlg.close());
-  dlg?.querySelector('.lb-prev')?.addEventListener('click', () => show(idx - 1));
-  dlg?.querySelector('.lb-next')?.addEventListener('click', () => show(idx + 1));
-  dlg?.addEventListener('click', (e) => { if (e.target === dlg || (e.target as HTMLElement).classList.contains('lightbox__in')) dlg.close(); });
+  dlg?.querySelector('.viewer__close')?.addEventListener('click', () => dlg.close());
+  dlg?.querySelector('.viewer__prev')?.addEventListener('click', () => show(idx - 1));
+  dlg?.querySelector('.viewer__next')?.addEventListener('click', () => show(idx + 1));
+  // kattintás a képen kívülre (a háttérre) bezárja
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   dlg?.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') show(idx - 1);
     if (e.key === 'ArrowRight') show(idx + 1);
