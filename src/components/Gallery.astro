@@ -34,9 +34,15 @@ const VISIBLE = 6;
 <dialog class="viewer" id="viewer" aria-label="Képnézegető">
   <img class="viewer__img" id="viewer-img" alt="" />
   <p class="viewer__count" id="viewer-count" aria-live="polite"></p>
-  <button class="viewer__btn viewer__close" type="button" aria-label="Bezárás">×</button>
-  <button class="viewer__btn viewer__prev" type="button" aria-label="Előző kép">‹</button>
-  <button class="viewer__btn viewer__next" type="button" aria-label="Következő kép">›</button>
+  <button class="viewer__btn viewer__close" type="button" aria-label="Bezárás">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+  <button class="viewer__btn viewer__prev" type="button" aria-label="Előző kép">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7" /></svg>
+  </button>
+  <button class="viewer__btn viewer__next" type="button" aria-label="Következő kép">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+  </button>
 </dialog>
 <style>
   .grid {
@@ -133,16 +139,19 @@ const VISIBLE = 6;
   }
   .viewer__btn {
     position: fixed;
+    display: grid;
+    place-items: center;
     width: 48px;
     height: 48px;
+    padding: 0;
     border: 0;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.14);
     color: #fff;
-    font: 400 2rem/1 var(--body);
     cursor: pointer;
     transition: background-color 0.15s;
   }
+  .viewer__btn svg { display: block; width: 24px; height: 24px; }
   .viewer__btn:hover { background: var(--red); }
   .viewer__close { top: 1rem; right: 1rem; }
   .viewer__prev { left: 1rem; top: 50%; translate: 0 -50%; }
