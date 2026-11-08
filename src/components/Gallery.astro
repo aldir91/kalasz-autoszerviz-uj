@@ -7,7 +7,7 @@ const sources = Object.entries(modules).sort(([a], [b]) => a.localeCompare(b)).m
 const items = await Promise.all(
   sources.map(async (src) => ({ src, full: (await getImage({ src, width: 1800, format: 'webp' })).src })),
 );
-const VISIBLE = 9;
+const VISIBLE = 6;
 ---
 <section class="section" id="referenciak">
   <div class="wrap">
@@ -18,10 +18,10 @@ const VISIBLE = 9;
     {items.length === 0 ? (
       <p class="gallery-empty">Még nincs kép. Másold a fotókat a <code>src/assets/gallery/</code> mappába.</p>
     ) : (
-      <div class="gallery">
+      <div class="grid">
         {items.map((it, i) => (
-          <button class="gallery__item" type="button" data-full={it.full} hidden={i >= VISIBLE} aria-label="Kép megnyitása nagyban">
-            <Image src={it.src} width={640} alt="Munka a Kalász Autószerviz műhelyében" loading="lazy" format="webp" />
+          <button class="tile" type="button" data-full={it.full} hidden={i >= VISIBLE} aria-label="Kép megnyitása nagyban">
+            <Image src={it.src} width={720} height={540} fit="cover" alt="Munka a Kalász Autószerviz műhelyében" loading="lazy" format="webp" />
           </button>
         ))}
       </div>
@@ -37,10 +37,60 @@ const VISIBLE = 9;
   <button class="lb-prev" type="button" aria-label="Előző kép">‹</button>
   <button class="lb-next" type="button" aria-label="Következő kép">›</button>
 </dialog>
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
+  .tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+    cursor: zoom-in;
+  }
+  .tile[hidden] { display: none; }
+  .tile :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .tile:hover :global(img),
+  .tile:focus-visible :global(img) { transform: scale(1.05); }
+  .tile::after {
+    content: '+';
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    font: 700 1.7rem/1 var(--display);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .tile:hover::after,
+  .tile:focus-visible::after { opacity: 1; transform: none; }
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+  }
+</style>
 <script>
   const dlg = document.getElementById('lightbox') as HTMLDialogElement | null;
   const img = document.getElementById('lb-img') as HTMLImageElement | null;
-  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.gallery__item'));
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tile'));
   let idx = 0;
   const show = (i: number) => {
     if (!img || !buttons.length) return;
