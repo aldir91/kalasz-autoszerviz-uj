@@ -228,3 +228,19 @@ p { margin: 0; }
 .prose p + p, .prose ul { margin-top: .8rem; }
 .prose a { color: var(--red); }
 .note { border-left: 4px solid var(--red); background: var(--surface); padding: 1rem 1.2rem; margin-bottom: 2rem; color: var(--text); }
+
+/* ---------- Nyitó rész belépő animáció ---------- */
+.hero__body > * {
+  animation: hero-rise 0.6s ease-out both;
+}
+.hero__body > :nth-child(2) { animation-delay: 0.08s; }
+.hero__body > :nth-child(3) { animation-delay: 0.16s; }
+.hero__body > :nth-child(4) { animation-delay: 0.24s; }
+.hero__body > :nth-child(5) { animation-delay: 0.32s; }
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__body > * { animation: none; }
+}
