@@ -38,6 +38,12 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
       </label>
       <div class="field--full"><button class="btn btn--red" type="submit" id="f-submit">Időpontot kérek</button></div>
       <p class="form__status" id="f-status" role="status" aria-live="polite"></p>
+      <div class="thanks" id="booking-thanks" hidden tabindex="-1" role="status">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        <h3>Köszönjük, megkaptuk!</h3>
+        <p>Hétköznap munkaidőben visszahívjuk az időpont egyeztetéséhez. Ha sürgős, hívjon minket: <a href={site.phoneHref}>{site.phone}</a></p>
+        <button class="btn btn--outline" type="button" id="thanks-again">Új kérés küldése</button>
+      </div>
     </form>
   </div>
 </section>
@@ -53,6 +59,17 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
     date.setCustomValidity([0, 6].includes(d.getDay()) ? 'Hétvégén zárva vagyunk, kérjük, válasszon hétköznapot.' : '');
   });
   const say = (msg, cls) => { status.textContent = msg; status.className = 'form__status ' + (cls || ''); };
+  const thanks = document.getElementById('booking-thanks');
+  const showThanks = () => {
+    Array.from(form.children).forEach((c) => { if (c !== thanks) c.style.display = 'none'; });
+    thanks.hidden = false;
+    thanks.focus();
+  };
+  document.getElementById('thanks-again')?.addEventListener('click', () => {
+    thanks.hidden = true;
+    Array.from(form.children).forEach((c) => { if (c !== thanks) c.style.display = ''; });
+    say('');
+  });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
@@ -68,9 +85,43 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
       const json = await res.json();
       if (!json.success) throw new Error(json.message);
       form.reset();
-      say('Köszönjük! Megkaptuk az időpontkérést, hamarosan visszahívjuk.', 'ok');
+      showThanks();
     } catch (err) {
       say('A küldés nem sikerült. Kérjük, próbálja újra, vagy hívjon minket: ' + phone, 'err');
     } finally { submit.disabled = false; }
   });
 </script>
+<style>
+  .thanks {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    outline: none;
+  }
+  .thanks:not([hidden]) {
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+    animation: thanks-in 0.35s ease-out;
+  }
+  .thanks svg {
+    width: 4.2rem;
+    height: 4.2rem;
+    padding: 1rem;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+  }
+  .thanks p { color: var(--muted); max-width: 30rem; }
+  .thanks p a { color: var(--text); font-weight: 600; }
+  @keyframes thanks-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .thanks:not([hidden]) { animation: none; }
+  }
+</style>
