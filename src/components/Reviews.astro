@@ -1,22 +1,58 @@
 ---
 import { site, reviews } from '../data/site';
+
+// A helyőrző "Minta Vélemény" sosem jelenik meg az éles oldalon
+const real = reviews.filter((r) => r.name !== 'Minta Vélemény');
+const g = (site as { googleRating?: { value: string; label: string } }).googleRating;
 ---
 <section class="section section--alt" id="velemenyek">
   <div class="wrap">
     <div class="section__head"><h2>Ügyfeleink véleménye</h2></div>
-    {site.rating && (
-      <div class="rating">
-        <strong>{site.rating.value}</strong>
-        <span>Google értékelés · {site.rating.count} vélemény alapján</span>
+
+    {g && (
+      <div class="score">
+        <strong class="score__num">{g.value}</strong>
+        <div>
+          <div class="stars" role="img" aria-label={`${g.value} az 5 csillagból`}>
+            {[0, 1, 2, 3, 4].map(() => (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" /></svg>
+            ))}
+          </div>
+          <p class="score__txt">Google értékelés · {g.label}</p>
+        </div>
       </div>
     )}
-    {reviews.length > 0 && (
+
+    {real.length > 0 && (
       <div class="reviews">
-        {reviews.map((r) => (
-          <figure class="review" style="margin:0"><blockquote style="margin:0"><p>{r.text}</p></blockquote><cite>{r.name}</cite></figure>
+        {real.map((r) => (
+          <figure class="review" style="margin:0">
+            <blockquote style="margin:0"><p>{r.text}</p></blockquote>
+            <cite>{r.name}</cite>
+          </figure>
         ))}
       </div>
     )}
+
     <a class="btn btn--outline" href={site.googleReviewsUrl} target="_blank" rel="noopener">Összes vélemény a Google-on</a>
   </div>
 </section>
+<style>
+  .score {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    margin-bottom: 2.4rem;
+  }
+  .score__num {
+    font: 800 clamp(4.5rem, 12vw, 6.5rem) / 0.85 var(--display);
+    color: var(--red);
+  }
+  .stars { display: flex; gap: 0.2rem; }
+  .stars svg { width: 1.6rem; height: 1.6rem; fill: #f5b301; }
+  .score__txt { margin-top: 0.5rem; color: var(--muted); font-weight: 500; }
+  @media (max-width: 480px) {
+    .score { gap: 1rem; }
+    .stars svg { width: 1.35rem; height: 1.35rem; }
+  }
+</style>
