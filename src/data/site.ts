@@ -19,7 +19,7 @@ export const site = {
     { days: 'Szombat – Vasárnap', time: 'Zárva' },
   ],
   // adatkezelési tájékoztató
-  legal: { company: 'Kalász Autószerviz [Nagy Ádám László E.V.]', taxId: '[59865825-2-24]', regId: '[57910084]' },
+  legal: { company: 'Kalász Autószerviz - Nagy Ádám László E.V.', taxId: '59865825-2-24', regId: '57910084' },
 };
 
 export const services = [
