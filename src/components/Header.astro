@@ -16,10 +16,6 @@ const links = [
     </a>
     <nav class="nav" id="nav" aria-label="Fő menü">
       {links.map(([label, href]) => <a href={href}>{label}</a>)}
-      <a class="nav__fb" href={site.facebook} target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        Facebook
-      </a>
     </nav>
     <div class="tools">
       <a class="icon-btn fb" href={site.facebook} target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
@@ -31,57 +27,4 @@ const links = [
       </button>
     </div>
     <button class="icon-btn menu-btn" type="button" aria-label="Menü" aria-expanded="false" aria-controls="nav">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
-  </div>
-</header>
-<style>
-  .icon-btn {
-    width: 40px;
-    height: 40px;
-    border: 0;
-    border-radius: 50%;
-    transition: background-color 0.15s;
-  }
-  .icon-btn:hover { background: rgba(255, 255, 255, 0.2); }
-  .icon-btn svg { width: 22px; height: 22px; }
-  .header :focus-visible { outline-color: #fff; }
-  .tools {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding-left: 1.1rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.4);
-  }
-  .nav__fb { display: none; }
-  @media (max-width: 960px) {
-    .tools { padding-left: 0; border-left: 0; }
-    .fb { display: none; }
-    .nav .nav__fb {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-top: 0.4rem;
-      border-bottom: 0;
-    }
-    .nav__fb svg { width: 24px; height: 24px; flex: none; }
-  }
-</style>
-<script>
-  const root = document.documentElement;
-  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch (e) {}
-  });
-  const btn = document.querySelector('.menu-btn');
-  const nav = document.getElementById('nav');
-  btn?.addEventListener('click', () => {
-    const open = nav?.classList.toggle('is-open');
-    btn.setAttribute('aria-expanded', String(!!open));
-  });
-  nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
-    nav.classList.remove('is-open');
-    btn?.setAttribute('aria-expanded', 'false');
-  }));
-</script>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4
