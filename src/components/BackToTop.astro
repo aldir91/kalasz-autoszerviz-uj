@@ -1,1 +1,50 @@
-
+<button class="btt" id="btt" type="button" aria-label="Vissza a lap tetejére" title="Vissza a lap tetejére">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+</button>
+<style>
+  .btt {
+    position: fixed;
+    right: 1rem;
+    bottom: 1.2rem;
+    z-index: 45;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s, visibility 0.25s, background-color 0.15s;
+  }
+  .btt svg { width: 24px; height: 24px; }
+  .btt:hover { background: var(--red-dark); }
+  .btt.is-visible { opacity: 1; visibility: visible; transform: none; }
+  @media (max-width: 760px) {
+    .btt { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btt { transition: none; }
+  }
+</style>
+<script is:inline>
+  (function () {
+    var b = document.getElementById('btt');
+    if (!b) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var onScroll = function () {
+      b.classList.toggle('is-visible', window.scrollY > 700);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    b.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  })();
+</script>
