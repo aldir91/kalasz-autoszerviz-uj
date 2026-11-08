@@ -11,7 +11,7 @@ const g = (site as { googleRating?: { value: string; label: string } }).googleRa
 
     {g && (
       <div class="score">
-        <strong class="score__num">{g.value}</strong>
+        <strong class="score__num" id="score-num" data-final={g.value}>{g.value}</strong>
         <div>
           <div class="stars" role="img" aria-label={`${g.value} az 5 csillagból`}>
             {[0, 1, 2, 3, 4].map(() => (
@@ -46,6 +46,7 @@ const g = (site as { googleRating?: { value: string; label: string } }).googleRa
   }
   .score__num {
     font: 800 clamp(4.5rem, 12vw, 6.5rem) / 0.85 var(--display);
+    font-variant-numeric: tabular-nums;
     color: var(--red);
   }
   .stars { display: flex; gap: 0.2rem; }
@@ -56,3 +57,37 @@ const g = (site as { googleRating?: { value: string; label: string } }).googleRa
     .stars svg { width: 1.35rem; height: 1.35rem; }
   }
 </style>
+<script is:inline>
+  (function () {
+    var el = document.getElementById('score-num');
+    if (!el) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+
+    var finalText = el.getAttribute('data-final') || el.textContent;
+    var target = parseFloat(finalText.replace(',', '.'));
+    if (isNaN(target)) return;
+    var decimals = (finalText.split(/[,.]/)[1] || '').length;
+    var fmt = function (n) { return n.toFixed(decimals).replace('.', ','); };
+
+    el.textContent = fmt(0);
+
+    var run = function () {
+      var start = null;
+      var duration = 1400;
+      var step = function (ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = p < 1 ? fmt(target * eased) : finalText;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    var io = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) { io.disconnect(); run(); }
+    }, { threshold: 0.6 });
+    io.observe(el);
+  })();
+</script>
