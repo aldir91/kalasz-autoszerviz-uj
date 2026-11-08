@@ -1,1 +1,117 @@
+---
+import { site } from '../data/site';
 
+// A nyitvatartást a site.ts "hours" mezőjéből olvassa (pl. 'Hétfő – Péntek' / '08:00 – 17:00')
+const DAYS = ['hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap'];
+const dayIndex = (s: string) => DAYS.findIndex((d) => s.toLowerCase().includes(d));
+const schedule: ({ o: number; c: number } | null)[] = Array(7).fill(null);
+
+for (const h of site.hours) {
+  const t = h.time.match(/(\d{1,2}):(\d{2})\s*[–—-]\s*(\d{1,2}):(\d{2})/);
+  if (!t) continue; // pl. "Zárva"
+  const parts = h.days.split(/\s*[–—-]\s*/);
+  const a = dayIndex(parts[0]);
+  const b = parts[1] !== undefined ? dayIndex(parts[1]) : a;
+  if (a < 0 || b < 0) continue;
+  const o = +t[1] * 60 + +t[2];
+  const c = +t[3] * 60 + +t[4];
+  for (let i = a; ; i = (i + 1) % 7) {
+    schedule[i] = { o, c };
+    if (i === b) break;
+  }
+}
+---
+<div class="os" id="open-status" data-schedule={JSON.stringify(schedule)} hidden>
+  <span class="os__dot" aria-hidden="true"></span>
+  <span class="os__txt"></span>
+</div>
+<style>
+  .os {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.3rem;
+    padding: 0.45rem 1rem 0.45rem 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.2;
+  }
+  .os[hidden] { display: none; }
+  .os__dot {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #f87171;
+  }
+  .os[data-state='open'] .os__dot { background: #22c55e; animation: os-pulse 2s infinite; }
+  .os[data-state='soon'] .os__dot { background: #f59e0b; animation: os-pulse-soon 2s infinite; }
+  @keyframes os-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
+    70%, 100% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  }
+  @keyframes os-pulse-soon {
+    0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+    70%, 100% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .os__dot { animation: none !important; }
+  }
+</style>
+<script is:inline>
+  (function () {
+    var el = document.getElementById('open-status');
+    if (!el) return;
+    var sched;
+    try { sched = JSON.parse(el.getAttribute('data-schedule')); } catch (e) { return; }
+    var txt = el.querySelector('.os__txt');
+    var map = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 };
+    var on = ['hétfőn', 'kedden', 'szerdán', 'csütörtökön', 'pénteken', 'szombaton', 'vasárnap'];
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var hm = function (m) { return pad(Math.floor(m / 60)) + ':' + pad(m % 60); };
+
+    function budapestNow() {
+      var parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Budapest', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      }).formatToParts(new Date());
+      var o = {};
+      parts.forEach(function (x) { o[x.type] = x.value; });
+      return { d: map[o.weekday], m: parseInt(o.hour, 10) * 60 + parseInt(o.minute, 10) };
+    }
+
+    function update() {
+      var n = budapestNow();
+      var t = sched[n.d];
+      var state, text;
+      if (t && n.m >= t.o && n.m < t.c) {
+        if (t.c - n.m <= 60) { state = 'soon'; text = 'Hamarosan zárunk · ' + hm(t.c) + '-ig'; }
+        else { state = 'open'; text = 'Most nyitva · ' + hm(t.c) + '-ig'; }
+      } else {
+        state = 'closed';
+        text = 'Most zárva';
+        var next = null;
+        if (t && n.m < t.o) {
+          next = 'ma ' + hm(t.o) + '-kor';
+        } else {
+          for (var i = 1; i <= 7; i++) {
+            var d = (n.d + i) % 7;
+            if (sched[d]) { next = (i === 1 ? 'holnap' : on[d]) + ' ' + hm(sched[d].o) + '-kor'; break; }
+          }
+        }
+        if (next) text += ' · ' + next + ' nyitunk';
+      }
+      el.setAttribute('data-state', state);
+      txt.textContent = text;
+      el.hidden = false;
+    }
+
+    update();
+    setInterval(update, 60000);
+  })();
+</script>
