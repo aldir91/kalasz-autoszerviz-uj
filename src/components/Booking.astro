@@ -89,8 +89,8 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
   plateEl.addEventListener('input', () => {
     plateEl.value = plateEl.value.toUpperCase().replace(/[^A-Z0-9 \-]/g, '');
   });
-  noteEl.addEventListener('input', () => { noteCount.textContent = noteEl.value.length + ' / 500'; });
-  form.addEventListener('reset', () => setTimeout(() => { noteCount.textContent = '0 / 500'; }));
+  noteEl.addEventListener('input', () => { noteCount.textContent = noteEl.value.length + ' / 300'; });
+  form.addEventListener('reset', () => setTimeout(() => { noteCount.textContent = '0 / 300'; }));
 
   // legkésőbbi választható dátum: kb. fél év
   const latest = new Date(today);
