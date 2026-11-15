@@ -202,9 +202,13 @@ p { margin: 0; }
 .contact dd { margin: .15rem 0 0; font: 700 1.5rem/1.2 var(--display); }
 .contact dd a { text-decoration: none; }
 .contact dd a:hover { color: var(--red); }
-.hours { width: 100%; border-collapse: collapse; font-family: var(--body); font-size: 1.05rem; font-weight: 500; }
+.hours { width: 100%; border-collapse: collapse; font: 700 1.5rem/1.2 var(--display); }
 .hours td { padding: .35rem 0; }
-.hours td:last-child { text-align: right; }
+.hours td:last-child { text-align: right; white-space: nowrap; padding-left: 1rem; }
+@media (max-width: 480px) {
+  .hours { font-size: 1.2rem; }
+  .hours td:last-child { padding-left: 0.6rem; }
+}
 .map { position: relative; min-height: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: grid; place-items: center; text-align: center; padding: 1.5rem; }
 .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .map p { color: var(--muted); font-size: .92rem; max-width: 24rem; margin: 0 auto 1.1rem; }
