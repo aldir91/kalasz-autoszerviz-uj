@@ -12,9 +12,9 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
       <a class="btn btn--outline" href={site.phoneHref}>{site.phone}</a>
     </div>
     <form class="form" id="booking-form" data-key={import.meta.env.PUBLIC_WEB3FORMS_KEY} novalidate>
-      <div class="field"><label for="f-name">Név *</label><input id="f-name" name="Nev" required autocomplete="name" /></div>
-      <div class="field"><label for="f-phone">Telefonszám *</label><input id="f-phone" name="Telefonszam" type="tel" required autocomplete="tel" /></div>
-      <div class="field field--full"><label for="f-email">E-mail</label><input id="f-email" name="E-mail" type="email" autocomplete="email" /></div>
+      <div class="field"><label for="f-name">Név *</label><input id="f-name" name="Nev" required minlength="3" maxlength="50" autocomplete="name" pattern="[\p{L} .'\-]{2,80}" title="Csak betűk, szóköz, pont, kötőjel és aposztróf" /></div>
+      <div class="field"><label for="f-phone">Telefonszám *</label><input id="f-phone" name="Telefonszam" type="tel" inputmode="tel" required minlength="8" maxlength="20" autocomplete="tel" pattern="\+?[0-9][0-9 \-]{6,18}" title="Pl. +36 70 123 4567 vagy 06 70 123 4567" /></div>
+      <div class="field field--full"><label for="f-email">E-mail</label><input id="f-email" name="E-mail" type="email" maxlength="50" autocomplete="email" /></div>
       <div class="field field--full">
         <label for="f-service">Szolgáltatás *</label>
         <select id="f-service" name="Szolgaltatas" required>
@@ -23,14 +23,14 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
           <option>Egyéb</option>
         </select>
       </div>
-      <div class="field"><label for="f-car">Autó típusa</label><input id="f-car" name="Auto tipusa" placeholder="pl. Audi A4 2.0 TDI" /></div>
-      <div class="field"><label for="f-plate">Rendszám</label><input id="f-plate" name="Rendszam" autocapitalize="characters" /></div>
+      <div class="field"><label for="f-car">Autó típusa</label><input id="f-car" name="Auto tipusa" maxlength="60" placeholder="pl. Audi A4 2.0 TDI" /></div>
+      <div class="field"><label for="f-plate">Rendszám</label><input id="f-plate" name="Rendszam" maxlength="12" autocapitalize="characters" autocomplete="off" pattern="[A-Za-z0-9 \-]{2,10}" title="Betűk, számok és kötőjel, pl. ABC-123" /></div>
       <div class="field"><label for="f-date">Kívánt dátum *</label><input id="f-date" name="Kivant datum" type="date" required /></div>
       <div class="field">
         <label for="f-time">Kívánt időpont *</label>
         <select id="f-time" name="Kivant idopont" required><option value="">Válasszon…</option>{times.map((t) => <option>{t}</option>)}</select>
       </div>
-      <div class="field field--full"><label for="f-note">Megjegyzés</label><textarea id="f-note" name="Megjegyzes" placeholder="Írja le röviden a hibát vagy a kérést"></textarea></div>
+      <div class="field field--full"><label for="f-note">Megjegyzés</label><textarea id="f-note" name="Megjegyzes" maxlength="300" placeholder="Írja le röviden a hibát vagy a kérést"></textarea><small class="count" id="note-count">0 / 300</small></div>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <label class="consent field--full">
         <input type="checkbox" id="f-consent" required />
@@ -70,6 +70,33 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
     Array.from(form.children).forEach((c) => { if (c !== thanks) c.style.display = ''; });
     say('');
   });
+  // ---- Mezők korlátozása ----
+  const byId = (id) => document.getElementById(id);
+  const nameEl = byId('f-name');
+  const phoneEl = byId('f-phone');
+  const plateEl = byId('f-plate');
+  const noteEl = byId('f-note');
+  const noteCount = byId('note-count');
+
+  nameEl.addEventListener('input', () => {
+    nameEl.value = nameEl.value.replace(/[^\p{L} .'’\-]/gu, '');
+  });
+  phoneEl.addEventListener('input', () => {
+    phoneEl.value = phoneEl.value.replace(/[^0-9+ \-]/g, '');
+    const digits = phoneEl.value.replace(/\D/g, '').length;
+    phoneEl.setCustomValidity(digits >= 8 && digits <= 15 ? '' : 'Kérjük, érvényes telefonszámot adjon meg (8–15 számjegy).');
+  });
+  plateEl.addEventListener('input', () => {
+    plateEl.value = plateEl.value.toUpperCase().replace(/[^A-Z0-9 \-]/g, '');
+  });
+  noteEl.addEventListener('input', () => { noteCount.textContent = noteEl.value.length + ' / 500'; });
+  form.addEventListener('reset', () => setTimeout(() => { noteCount.textContent = '0 / 500'; }));
+
+  // legkésőbbi választható dátum: kb. fél év
+  const latest = new Date(today);
+  latest.setDate(latest.getDate() + 180);
+  date.max = latest.toISOString().slice(0, 10);
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
@@ -123,5 +150,10 @@ for (let h = 8; h <= 16; h++) { times.push(`${String(h).padStart(2, '0')}:00`, `
   }
   @media (prefers-reduced-motion: reduce) {
     .thanks:not([hidden]) { animation: none; }
+  }
+  .count {
+    align-self: flex-end;
+    color: var(--muted);
+    font-size: 0.85rem;
   }
 </style>
